@@ -1,8 +1,11 @@
-statements = []
+class BlockStatement:
+    statements = []
+    # def __init__(self, statement):
+    #     self.statements = statement
 
-def addStatement(statement):
-    statements.append(statement)
+    def add(self, statement):
+        self.statements.append(statement)
 
-def executeStatement():
-    for i in range(len(statements)):
-        statements[i].execute()
+    def execute(self):
+        for i in range(len(self.statements)):
+            self.statements[i].execute()
