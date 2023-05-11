@@ -2,7 +2,7 @@ from Lexer import *
 from Parser import *
 
 def main():
-    string_input = "while ( 2 > 0 )  ok = 4 "
+    string_input = "if (3 > 2) loh = 2 + 4"
     obj = Lexer(string_input)
     tokens = obj.Tokinize()
     print(tokens)
@@ -10,7 +10,6 @@ def main():
     statement = parser.parse()
     print(variables)
     program = parser.parse()
-    program.executeblock()
     # for stmt in program:
     #     if stmt is not None:
     #         stmt.execute()

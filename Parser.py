@@ -5,7 +5,7 @@ from AssigmentStatement import *
 from VariableExpression import *
 from While_statement import *
 from BlockStatement import *
-
+from IFstatement import *
 
 class Parser:
     def __init__(self, tokens):
@@ -37,12 +37,13 @@ class Parser:
     def statement(self):
         if self.match("WHILE"):
             return self.WhileStatement()
+        if self.match("IF"):
+            return self.Ifstatement()
         else:
             return self.assigmentStatement()
 
     def assigmentStatement(self):
         current = self.get(0)
-        print(current)
         if (self.match("WORD") and list(self.get(0))[0] == "EQ"):
             variable = current["WORD"]
             self.pos += 1
@@ -62,6 +63,15 @@ class Parser:
         statement = WhileStatement(condition,block)
         return statement
 
+    def Ifstatement(self):
+        list(self.get(0))[0] == "LPARREN"
+        self.pos += 1
+        condition = self.conditionsOP()
+        list(self.get(0))[0] == "RPARREN"
+        self.pos += 1
+        block = self.statementOrBlock()
+        statement = Ifstatement(condition,block)
+        return statement
 
     def Expression(self):
         return self.additive()
