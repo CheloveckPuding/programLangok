@@ -5,7 +5,7 @@ class AssigmentStatement:
         self.variable = variable
         self.result = result
 
-    def execute(self):
+    def executeblock(self):
         setVariables(self.variable, self.result.eval())
 
 

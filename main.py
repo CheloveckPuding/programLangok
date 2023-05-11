@@ -10,7 +10,7 @@ def main():
     statement = parser.parse()
     print(variables)
     program = parser.parse()
-    program.execute()
+    program.executeblock()
     # for stmt in program:
     #     if stmt is not None:
     #         stmt.execute()

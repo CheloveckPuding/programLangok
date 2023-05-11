@@ -6,6 +6,6 @@ class BlockStatement:
     def add(self, statement):
         self.statements.append(statement)
 
-    def execute(self):
+    def executeblock(self):
         for i in range(len(self.statements)):
-            self.statements[i].execute()
+            self.statements[i].executeblock()

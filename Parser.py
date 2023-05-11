@@ -48,7 +48,7 @@ class Parser:
             self.pos += 1
             resultToVariable = self.Expression()
             result_Variable = AssigmentStatement(variable, resultToVariable)
-            result_Variable.execute()
+            result_Variable.executeblock()
             return result_Variable
         raise Exception("Unknown Statement")
 
@@ -58,7 +58,7 @@ class Parser:
         condition = self.conditionsOP()
         list(self.get(0))[0] == "RPARREN"
         self.pos += 1
-        block = self.statementOrBlock
+        block = self.statementOrBlock()
         statement = WhileStatement(condition,block)
         return statement
 
