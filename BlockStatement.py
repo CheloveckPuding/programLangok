@@ -1,5 +1,5 @@
 class BlockStatement:
-    def __init__(self, statements):
+    def __init__(self):
         self.statements = []
 
     def add(self, statement):

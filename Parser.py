@@ -22,7 +22,6 @@ class Parser:
 
     def block(self):
         block = BlockStatement()
-        # self.consume("LBRACE")
         self.pos += 1
         while (not self.match("RBRACE")):
             block.add(self.statement())
@@ -44,12 +43,13 @@ class Parser:
 
     def assigmentStatement(self):
         current = self.get(0)
+        print(current)
         if (self.match("WORD") and list(self.get(0))[0] == "EQ"):
             variable = current["WORD"]
             self.pos += 1
             resultToVariable = self.Expression()
             result_Variable = AssigmentStatement(variable, resultToVariable)
-            result_Variable.executeblock()
+            result_Variable.execute()
             return result_Variable
         raise Exception("Unknown Statement")
 
