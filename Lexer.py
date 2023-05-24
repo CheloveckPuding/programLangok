@@ -8,15 +8,14 @@ operators_char = {
     ")": "RPAREN",
     "{": "LBRACE",
     "}": "RBRACE",
-    "&": "AND",
-    "|": "OR",
     "!": "NOT",
     "=": "EQ",
     "==": "EQUALITY",
     ">": "BIG",
     "<": "SMALL",
     "<=": "SMALLEQ",
-    ">=": "BIGEQ"
+    ">=": "BIGEQ",
+    "." : "COMMA"
 }
 
 class Lexer:
@@ -51,10 +50,21 @@ class Lexer:
             line_num += current
             self.next()
             current = self.peek(0)
+
         if line_num == 'if':
             self.add_Token("IF", line_num)
         elif line_num == 'while':
             self.add_Token("WHILE", line_num)
+        elif line_num == 'for':
+            self.add_Token("FOR",line_num)
+        elif line_num == "else":
+            self.add_Token("ELSE", line_num)
+        elif line_num == "elif":
+            self.add_Token("ELIF", line_num)
+        elif line_num == "do":
+            self.add_Token("DO", line_num)
+        elif line_num == 'print':
+            self.add_Token("PRINT",line_num)
         else:
             self.add_Token("WORD", line_num)
         return

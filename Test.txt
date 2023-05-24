@@ -1,0 +1,10 @@
+ok = 1
+
+if ( ok == 1 )
+{ nice = 1
+    do
+    { nice = nice * 3 + 2 - 1 print nice }
+    while ( nice < 20 )
+}
+else
+{ print 401 }

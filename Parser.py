@@ -6,6 +6,9 @@ from VariableExpression import *
 from While_statement import *
 from BlockStatement import *
 from IFstatement import *
+from  DoWhileStatement import *
+from PrintStatement import *
+from ForStatement import *
 
 class Parser:
     def __init__(self, tokens):
@@ -34,16 +37,20 @@ class Parser:
             return self.statement()
 
     def statement(self):
+        if self.match("FOR"):
+            return self.forStatement()
         if self.match("WHILE"):
             return self.WhileStatement()
         if self.match("IF"):
             return self.Ifstatement()
-        else:
-            return self.assigmentStatement()
+        if self.match("DO"):
+            return self.DOWhileStatement()
+        if self.match("PRINT"):
+            return PrintStatement(self.Expression())
+        return self.assigmentStatement()
 
     def assigmentStatement(self):
         current = self.get(0)
-        print(current)
         if (self.match("WORD") and list(self.get(0))[0] == "EQ"):
             variable = current["WORD"]
             self.pos += 1
@@ -53,24 +60,66 @@ class Parser:
             return result_Variable
         raise Exception("Unknown Statement")
 
-    def WhileStatement(self):
-        list(self.get(0))[0] == "LPARREN"
-        self.pos += 1
-        condition = self.conditionsOP()
-        list(self.get(0))[0] == "RPARREN"
-        self.pos += 1
-        block = self.statementOrBlock()
-        statement = WhileStatement(condition,block)
+    def forStatement(self):
+        if list(self.get(0))[0] == "LPAREN":
+            self.pos += 1
+            start = self.primary()
+            if list(self.get(0))[0] == "COMMA":
+                self.pos += 1
+                finish = self.primary()
+                if list(self.get(0))[0] == "RPAREN":
+                    self.pos += 1
+                    block = self.statementOrBlock()
+                    statement = ForStatement(int(start.eval()), int(finish.eval()), block)
+                else:
+                    raise Exception("Unknown Statement")
+            else:
+                raise Exception("Unknown Statement")
+        else:
+            raise Exception("Unknown Statement")
         return statement
 
+    def WhileStatement(self):
+        if list(self.get(0))[0] == "LPAREN":
+            self.pos += 1
+            condition = self.conditionsOP()
+            if list(self.get(0))[0] == "RPAREN":
+                self.pos += 1
+                block = self.statementOrBlock()
+                statement = WhileStatement(condition,block)
+                return statement
+            else:
+                raise Exception("Rparen is left")
+        else:
+            raise Exception("Lparen is left")
+
     def Ifstatement(self):
-        list(self.get(0))[0] == "LPARREN"
-        self.pos += 1
-        condition = self.conditionsOP()
-        list(self.get(0))[0] == "RPARREN"
-        self.pos += 1
+        if list(self.get(0))[0] == "LPAREN":
+            self.pos += 1
+            expression = self.conditionsOP()
+            if list(self.get(0))[0] == "RPAREN":
+                self.pos += 1
+                block = self.statementOrBlock()
+            else:
+                raise Exception("Rparen is left")
+            if self.match("ELSE"):
+                elseStatement = self.statementOrBlock()
+            else:
+                elseStatement = None
+        else:
+            raise Exception("Lparen is left")
+        statement = Ifstatement(expression,block,elseStatement)
+        return statement
+
+    def DOWhileStatement(self):
         block = self.statementOrBlock()
-        statement = Ifstatement(condition,block)
+        if self.match("WHILE"):
+            self.pos += 1
+            condition = self.conditionsOP()
+            self.pos += 1
+        else:
+            raise Exception("While statement is missing")
+        statement = DoWhileStatement(condition,block)
         return statement
 
     def Expression(self):
@@ -138,6 +187,9 @@ class Parser:
                 continue
             if (self.match("BIG")):
                 result = Operations(">", result, self.primary())
+                continue
+            if (self.match("EQUALITY")):
+                result = Operations("==", result, self.primary())
                 continue
             break
         return result

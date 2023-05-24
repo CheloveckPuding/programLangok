@@ -3,5 +3,5 @@ class WhileStatement:
         self.condition = condition
         self.statement = statement
     def execute(self):
-        while (self.condition.eval() != 0):
+        while self.condition.eval():
             self.statement.execute()
